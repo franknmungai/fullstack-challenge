@@ -12,6 +12,7 @@ const BookList: React.FC<Props> = ({ books }) => {
     <Grid container spacing={5}>
       {books.map((book, i) => (
         <Grid item lg={3} sm={12} sx={{ marginTop: '4rem' }} key={i}>
+          {book.id}
           <BookCard book={book} />
         </Grid>
       ))}

@@ -34,10 +34,10 @@ export const reducer = (state: AppState, action: ActionType): AppState => {
       };
     case 'SET_PAGE':
       const newPage = action.payload; //eg 2
-      const start = action.payload * 12; //24
-      const end = start + 12; //36
+      const end = action.payload * 12; //24
+      const start = end - 12; //36
       const currentBooksInview = state.books.filter(
-        (_, i) => i + 1 >= start && i + 1 < end
+        (book) => +book.id > start && +book.id <= end
       );
 
       return {

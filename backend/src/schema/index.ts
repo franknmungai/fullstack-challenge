@@ -1,5 +1,6 @@
 export const typeDefs = `#graphql
   type Book {
+    id: String
     title: String
     author: String
     coverPhotoURL: String

@@ -6,11 +6,13 @@ import BookList from '../BookList';
 import SearchBar from '../SearchBar';
 import './webview.css';
 import CustomPagination from '../Pagination';
+import { Typography } from '@mui/material';
 
 const WebView = () => {
   const GET_BOOKS = gql`
     query Books {
       books {
+        id
         author
         title
         coverPhotoURL
@@ -23,7 +25,7 @@ const WebView = () => {
   const {
     addBooks,
     setPage,
-    state: { filteredResults, currentBooksInview },
+    state: { filteredResults, currentBooksInview, currentPage, books },
   } = useContext(AppContext);
 
   useEffect(() => {
@@ -51,6 +53,9 @@ const WebView = () => {
 
   return (
     <div className="container">
+      <Typography variant="body1" margin="0.5rem 0">
+        Page {currentPage} of {Math.ceil(books.length / 12)}
+      </Typography>
       <SearchBar />
       <BookList
         books={
