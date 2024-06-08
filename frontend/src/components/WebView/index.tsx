@@ -1,4 +1,4 @@
-import { useContext, useEffect } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { gql, useQuery } from '@apollo/client';
 import CircularProgress from '@mui/material/CircularProgress';
 import { AppContext } from '../../context';
@@ -6,7 +6,7 @@ import BookList from '../BookList';
 import SearchBar from '../SearchBar';
 import './webview.css';
 import CustomPagination from '../Pagination';
-import { Typography } from '@mui/material';
+import { Box, Stack, Tab, Tabs, Typography } from '@mui/material';
 
 const WebView = () => {
   const GET_BOOKS = gql`
@@ -22,6 +22,10 @@ const WebView = () => {
   `;
 
   const { loading, error, data } = useQuery(GET_BOOKS);
+  const [tabValue, setTabValue] = useState('all_books');
+
+  const isActive = (tab: 'all_books' | 'reading_list') => tab === tabValue;
+
   const {
     addBooks,
     setPage,
@@ -51,12 +55,40 @@ const WebView = () => {
     );
   }
 
+  const activeTabStyles = {
+    background: 'slateblue',
+    color: 'white',
+    borderRadius: '1rem',
+  };
+
   return (
     <div className="container">
       <Typography variant="body1" margin="0.5rem 0">
         Page {currentPage} of {Math.ceil(books.length / 12)}
       </Typography>
-      <SearchBar />
+      <Stack
+        flexDirection="row"
+        justifyContent="space-around"
+        alignItems="center"
+        width="100%"
+      >
+        <SearchBar />
+        <Tabs
+          sx={{ bgcolor: '#ededed', borderRadius: '1rem' }}
+          onChange={(_, value) => setTabValue(value)}
+        >
+          <Tab
+            value="all_books"
+            label="All books"
+            sx={isActive('all_books') ? activeTabStyles : {}}
+          />
+          <Tab
+            value="reading_list"
+            label="Reading List"
+            sx={isActive('reading_list') ? activeTabStyles : {}}
+          />
+        </Tabs>
+      </Stack>
       <BookList
         books={
           filteredResults.length > 0 ? filteredResults : currentBooksInview
