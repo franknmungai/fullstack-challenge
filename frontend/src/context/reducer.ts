@@ -6,6 +6,7 @@ export interface AppState {
   readingList: Book[];
   filteredResults: Book[]; //list of titles (search results)
   currentBooksInview: Book[];
+  showReadingList: boolean;
 }
 
 type ActionType =
@@ -15,7 +16,10 @@ type ActionType =
     }
   | { type: 'SET_PAGE'; payload: number }
   | { type: 'FILTER_RESULTS'; payload: string }
-  | { type: 'CLEAR_RESULTS' };
+  | { type: 'CLEAR_RESULTS' }
+  | { type: 'TOGGLE_READING_LIST'; payload: boolean }
+  | { type: 'ADD_TO_READING_LIST'; payload: Book }
+  | { type: 'REMOVE_FROM_READING_LIST'; payload: string };
 
 export const initialState: AppState = {
   books: [],
@@ -23,6 +27,7 @@ export const initialState: AppState = {
   currentBooksInview: [],
   readingList: [],
   filteredResults: [],
+  showReadingList: false,
 };
 
 export const reducer = (state: AppState, action: ActionType): AppState => {
@@ -58,6 +63,23 @@ export const reducer = (state: AppState, action: ActionType): AppState => {
       return {
         ...state,
         filteredResults: [],
+      };
+    case 'TOGGLE_READING_LIST':
+      return {
+        ...state,
+        showReadingList: action.payload,
+      };
+    case 'ADD_TO_READING_LIST':
+      return {
+        ...state,
+        readingList: [action.payload, ...state.readingList],
+      };
+    case 'REMOVE_FROM_READING_LIST':
+      return {
+        ...state,
+        readingList: state.readingList.filter(
+          (book) => book.id !== action.payload
+        ),
       };
     default:
       return state;

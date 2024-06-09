@@ -29,7 +29,14 @@ const WebView = () => {
   const {
     addBooks,
     setPage,
-    state: { filteredResults, currentBooksInview, currentPage, books },
+    state: {
+      filteredResults,
+      currentBooksInview,
+      currentPage,
+      books,
+      showReadingList,
+      readingList,
+    },
   } = useContext(AppContext);
 
   useEffect(() => {
@@ -69,11 +76,15 @@ const WebView = () => {
         <SearchBar />
         <CustomTabView />
       </Stack>
-      <BookList
-        books={
-          filteredResults.length > 0 ? filteredResults : currentBooksInview
-        }
-      />
+      {showReadingList ? (
+        <BookList books={readingList} />
+      ) : (
+        <BookList
+          books={
+            filteredResults.length > 0 ? filteredResults : currentBooksInview
+          }
+        />
+      )}
 
       <CustomPagination />
     </div>

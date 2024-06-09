@@ -1,11 +1,15 @@
-import { useState } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import Tab from '@mui/material/Tab';
 import Tabs from '@mui/material/Tabs';
+import { AppContext } from '../../context';
 
 const CustomTabView = () => {
   const [tabValue, setTabValue] = useState('all_books');
 
-  const isActive = (tab: 'all_books' | 'reading_list') => tab === tabValue;
+  const { toggleReadingList } = useContext(AppContext);
+  type TabName = 'all_books' | 'reading_list';
+
+  const isActive = (tab: TabName) => tab === tabValue;
 
   const activeTabStyles = {
     background: 'slateblue',
@@ -13,10 +17,18 @@ const CustomTabView = () => {
     borderRadius: '1rem',
   };
 
+  const handleTabChange = (value: TabName) => {
+    setTabValue(value);
+  };
+
+  useEffect(() => {
+    toggleReadingList(isActive('reading_list'));
+  }, [tabValue]);
+
   return (
     <Tabs
       sx={{ bgcolor: '#ededed', borderRadius: '1rem' }}
-      onChange={(_, value) => setTabValue(value)}
+      onChange={(_, value) => handleTabChange(value)}
     >
       <Tab
         value="all_books"
