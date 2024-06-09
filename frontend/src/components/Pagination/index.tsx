@@ -7,6 +7,7 @@ export default function CustomPagination() {
   const {
     state: { books },
     setPage,
+    clearResults,
   } = useContext(AppContext);
   const paginationCount = 12;
 
@@ -14,6 +15,11 @@ export default function CustomPagination() {
 
   const handleChange = (page: number) => {
     setPage(page);
+    clearResults();
+
+    document
+      .querySelector('.container')
+      ?.scrollIntoView({ behavior: 'smooth' });
   };
   return (
     <Stack spacing={2} margin={8}>

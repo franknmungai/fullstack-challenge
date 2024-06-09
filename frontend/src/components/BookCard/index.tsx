@@ -53,7 +53,7 @@ const BookCard: React.FC<Props> = ({ book }) => {
         <Stack
           direction="row"
           justifyContent="space-between"
-          sx={{ margin: '0.5rem 0' }}
+          sx={{ margin: '0.8rem 0' }}
         >
           <Typography variant="subtitle2" color="text.secondary">
             <span className="author">Title</span> {book.author}
@@ -75,7 +75,7 @@ const BookCard: React.FC<Props> = ({ book }) => {
                 toast.success(
                   book.title + ' has been removed from the reading list',
                   {
-                    duration: 4000,
+                    duration: 3000,
                   }
                 );
               }
@@ -95,7 +95,7 @@ const BookCard: React.FC<Props> = ({ book }) => {
               toast.success(
                 book.title + ' has been added to the reading list',
                 {
-                  duration: 4000,
+                  duration: 3000,
                 }
               );
             }}

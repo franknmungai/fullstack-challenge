@@ -1,6 +1,5 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { ThemeProvider } from '@mui/material';
-import './App.css';
 import WebView from './components/WebView';
 import theme from './utils/theme';
 import AppContextProvider from './context';

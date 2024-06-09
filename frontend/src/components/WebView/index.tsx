@@ -9,6 +9,7 @@ import BookList from '../BookList';
 import SearchBar from '../SearchBar';
 import CustomPagination from '../Pagination';
 import CustomTabView from '../Tabs';
+import illustration from '../../assets/no-books.svg';
 import './webview.css';
 
 const WebView = () => {
@@ -49,7 +50,7 @@ const WebView = () => {
   if (loading) {
     return (
       <div className="container">
-        <CircularProgress size="" />
+        <CircularProgress />
       </div>
     );
   }
@@ -58,26 +59,31 @@ const WebView = () => {
     return (
       <div className="container">
         <h1>An error occured: Could not fetch the books</h1>
+        <img src={illustration} width={300} alt="no books" />
       </div>
     );
   }
 
   return (
     <div className="container">
-      <Typography variant="body1" margin="0.5rem 0">
-        Page {currentPage} of {Math.ceil(books.length / 12)}
-      </Typography>
+      {!showReadingList && (
+        <Typography variant="body1" margin="0.5rem 0">
+          Page {currentPage} of {Math.ceil(books.length / 12)}
+        </Typography>
+      )}
       <Stack
-        flexDirection="row"
+        // flexDirection="row"
         justifyContent="space-around"
         alignItems="center"
         width="100%"
+        direction={{ xs: 'column-reverse', md: 'row' }}
+        spacing={{ xs: 2, md: 4 }}
       >
         <SearchBar />
         <CustomTabView />
       </Stack>
       {showReadingList ? (
-        <BookList books={readingList} />
+        <BookList books={readingList} showReadingList />
       ) : (
         <BookList
           books={
@@ -85,8 +91,7 @@ const WebView = () => {
           }
         />
       )}
-
-      <CustomPagination />
+      {!showReadingList ? <CustomPagination /> : null}
     </div>
   );
 };

@@ -12,7 +12,7 @@ const CustomTabView = () => {
   const isActive = (tab: TabName) => tab === tabValue;
 
   const activeTabStyles = {
-    background: 'slateblue',
+    background: '#4AA088',
     color: 'white',
     borderRadius: '1rem',
   };
