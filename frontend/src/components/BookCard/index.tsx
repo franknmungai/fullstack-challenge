@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Card from '@mui/material/Card';
 import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
@@ -6,6 +6,8 @@ import Typography from '@mui/material/Typography';
 import { Book } from '../../utils/types';
 import { Button, CardActions, Stack } from '@mui/material';
 import './bookcard.css';
+import { AppContext } from '../../context';
+import toast from 'react-hot-toast';
 
 type Props = {
   book: Book;
@@ -13,6 +15,11 @@ type Props = {
 
 const BookCard: React.FC<Props> = ({ book }) => {
   const [imageSrc, setImageSrc] = useState('');
+  const {
+    state: { readingList, showReadingList },
+    addToReadingList,
+    removeFromReadingList,
+  } = useContext(AppContext);
 
   useEffect(() => {
     const loadImage = async () => {
@@ -26,6 +33,10 @@ const BookCard: React.FC<Props> = ({ book }) => {
 
     loadImage();
   }, []);
+
+  const isInReadingList = useMemo(() => {
+    return readingList.some(({ id }) => id === book.id);
+  }, [readingList]);
 
   return (
     <Card>
@@ -54,9 +65,44 @@ const BookCard: React.FC<Props> = ({ book }) => {
       </CardContent>
 
       <CardActions sx={{ padding: '1.5rem' }}>
-        <Button size="small" color="secondary" variant="contained">
-          Add to reading list
-        </Button>
+        {isInReadingList ? (
+          <Button
+            variant="outlined"
+            size="small"
+            onClick={() => {
+              if (showReadingList) {
+                removeFromReadingList(book.id);
+                toast.success(
+                  book.title + ' has been removed from the reading list',
+                  {
+                    duration: 4000,
+                  }
+                );
+              }
+            }}
+          >
+            {showReadingList
+              ? 'Remove from reading list'
+              : 'Added to reading list'}
+          </Button>
+        ) : (
+          <Button
+            color="secondary"
+            size="small"
+            variant="contained"
+            onClick={() => {
+              addToReadingList(book);
+              toast.success(
+                book.title + ' has been added to the reading list',
+                {
+                  duration: 4000,
+                }
+              );
+            }}
+          >
+            Add to reading list
+          </Button>
+        )}
       </CardActions>
     </Card>
   );

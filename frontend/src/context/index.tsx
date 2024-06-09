@@ -9,6 +9,8 @@ interface ContextProps {
   filterResults: (title: string) => void;
   clearResults: () => void;
   toggleReadingList: (show: boolean) => void;
+  addToReadingList: (book: Book) => void;
+  removeFromReadingList: (id: string) => void;
 }
 export const AppContext = createContext<ContextProps>({
   state: initialState,
@@ -17,6 +19,8 @@ export const AppContext = createContext<ContextProps>({
   filterResults: () => {},
   clearResults: () => {},
   toggleReadingList: () => {},
+  addToReadingList: () => {},
+  removeFromReadingList: () => {},
 });
 
 const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
@@ -41,6 +45,17 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
     dispatch({ type: 'TOGGLE_READING_LIST', payload: show });
   };
 
+  const addToReadingList = (book: Book) => {
+    dispatch({
+      type: 'ADD_TO_READING_LIST',
+      payload: book,
+    });
+  };
+
+  const removeFromReadingList = (id: string) => {
+    dispatch({ type: 'REMOVE_FROM_READING_LIST', payload: id });
+  };
+
   return (
     <AppContext.Provider
       value={{
@@ -50,6 +65,8 @@ const AppContextProvider: React.FC<PropsWithChildren> = ({ children }) => {
         filterResults,
         clearResults,
         toggleReadingList,
+        addToReadingList,
+        removeFromReadingList,
       }}
     >
       {children}

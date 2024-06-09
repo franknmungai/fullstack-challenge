@@ -4,6 +4,7 @@ import './App.css';
 import WebView from './components/WebView';
 import theme from './utils/theme';
 import AppContextProvider from './context';
+import { Toaster } from 'react-hot-toast';
 
 function App() {
   const client = new ApolloClient({
@@ -16,6 +17,7 @@ function App() {
       <ThemeProvider theme={theme}>
         <AppContextProvider>
           <WebView />
+          <Toaster />
         </AppContextProvider>
       </ThemeProvider>
     </ApolloProvider>
